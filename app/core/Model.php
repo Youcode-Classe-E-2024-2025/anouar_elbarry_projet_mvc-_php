@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Core;
-class Modal {
+class Model {
     public function __get($property)
     {
         if (property_exists($this, $property)) {

@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Front;
 
-use App\Core\Controller;
+use App\Core\View;
 use App\Models\Article;
 
-class HomeController extends Controller {
+class HomeController extends View {
     private $articleModel;
     
     public function __construct($twig) {

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controllers\Front;
-use App\Core\Controller;
 class AuthController{
 
     public function __construct(){

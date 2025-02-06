@@ -25,11 +25,12 @@ class Router {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         
         foreach($this->routes as $route){
-           if($route['method'] === $method && $this->matchPath($route['path'], $path)){
+           $params = [];
+           if($route['method'] === $method && $this->matchPath($route['path'], $path, $params)){
                 [$controller, $action] = explode('@', $route['controller']);
                 $controllerClass = "App\\Controllers\\" . $controller;
                 $controllerInstance = new $controllerClass($this->twig);
-                return $controllerInstance->$action();
+                return $controllerInstance->$action(...$params);
            }
         }
         
@@ -38,10 +39,31 @@ class Router {
         return $errorController->notFound();
     }
     
-    private function matchPath($routePath, $requestPath) {
-        // Convert route parameters like {id} to regex pattern
-        $pattern = preg_replace('/\{([^}]+)\}/', '([^/]+)', $routePath);
+    private function matchPath($routePath, $requestPath, &$params) {
+        // Convert route parameters like {id} to regex pattern and capture parameter names
+        $pattern = preg_replace_callback('/\{([^}]+)\}/', function($matches) {
+            return '([^/]+)';
+        }, $routePath);
+        
         $pattern = "@^" . $pattern . "$@D";
-        return preg_match($pattern, $requestPath) === 1;
+        
+        if (preg_match($pattern, $requestPath, $matches)) {
+            // Get parameter names from route path
+            preg_match_all('/\{([^}]+)\}/', $routePath, $paramNames);
+            
+            // Skip the first match (full string match)
+            array_shift($matches);
+            
+            // Combine parameter names with their values
+            foreach ($matches as $index => $value) {
+                if (isset($paramNames[1][$index])) {
+                    $params[] = $value;
+                }
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
 }

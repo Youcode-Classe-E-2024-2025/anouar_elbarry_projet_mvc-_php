@@ -1,0 +1,62 @@
+{% extends "front/base.html.twig" %}
+
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-gray-800">Articles</h1>
+    
+    {% if articles is empty %}
+        <div class="bg-gray-100 rounded-lg p-6 text-center">
+            <p class="text-gray-600">No articles found.</p>
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for article in articles %}
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:transform hover:scale-105">
+                    {% if article.image %}
+                        <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full h-48 object-cover">
+                    {% endif %}
+                    
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold mb-2 text-gray-800">
+                            <a href="/article/{{ article.id }}" class="hover:text-blue-600 transition-colors duration-200">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+                        
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            {{ article.content|striptags|slice(0, 150) }}...
+                        </p>
+                        
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>
+                                <i class="far fa-calendar-alt mr-1"></i>
+                                {{ article.created_at|date("F j, Y") }}
+                            </span>
+                            <a href="/article/{{ article.id }}" class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
+                                Read More →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+        
+        {% if totalPages > 1 %}
+            <div class="mt-8 flex justify-center">
+                <nav class="inline-flex rounded-md shadow">
+                    {% for i in 1..totalPages %}
+                        <a href="?page={{ i }}" 
+                           class="px-3 py-2 {% if currentPage == i %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-50{% endif %} text-sm font-medium border {% if not loop.last %}border-r-0{% endif %}
+                                  {% if loop.first %}rounded-l-md{% endif %}
+                                  {% if loop.last %}rounded-r-md{% endif %}">
+                            {{ i }}
+                        </a>
+                    {% endfor %}
+                </nav>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

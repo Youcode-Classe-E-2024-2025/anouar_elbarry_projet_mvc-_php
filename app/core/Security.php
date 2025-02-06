@@ -1,14 +1,25 @@
 <?php
+namespace App\Core;
+
+use \PDOException;
+use \PDOStatement;
+
 class Security {
+    private $conn;
+
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+
     // CSRF Protection
-    function generateCsrfToken() {
+    public function generateCsrfToken(): string {
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
         return $_SESSION['csrf_token'];
     }
     
-    function validateCsrfToken($token) {
+    public function validateCsrfToken(string $token): bool {
         if (isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token)) {
             return true;
         }
@@ -29,7 +40,7 @@ class Security {
     }
 
     // Secure Database Queries
-    public function secureQuery($conn, $sql, $params = []) {
+    public function secureQuery($conn,string $sql, array $params = []): PDOStatement|false {
         try {
             $stmt = $conn->prepare($sql);
             $params = $this->sanitizeInput($params);
