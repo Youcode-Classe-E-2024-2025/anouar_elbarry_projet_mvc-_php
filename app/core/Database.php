@@ -5,29 +5,38 @@ use PDO;
 use PDOException;
 
 class Database {
+    private static $instance = null;
     private $connection;
-    private $host = "localhost";
-    private $username = "postgres";
-    private $dbname = "mvc";
-    private $password = "jppp5734";
+    private $host;
+    private $username;
+    private $dbname;
+    private $password;
+    private $port;
 
-    public function __construct($host, $dbname, $username, $password) {
+    private function __construct() {
+        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
+        $this->dbname = $_ENV['DB_NAME'] ?? 'mvc';
+        $this->username = $_ENV['DB_USER'] ?? 'postgres';
+        $this->password = $_ENV['DB_PASS'] ?? 'jppp5734';
+        $this->port = $_ENV['DB_PORT'] ?? '5433';
+
         try {
-            $dsn = "pgsql:host=$host;dbname=$dbname";
-            $this->connection = new PDO($dsn, $username, $password);
+            $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}";
+            $this->connection = new PDO($dsn, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
     }
 
-    public function query($sql, $params = []) {
-        try {
-            $stmt = $this->connection->prepare($sql);
-            $stmt->execute($params);
-            return $stmt;
-        } catch(PDOException $e) {
-            die("Query failed: " . $e->getMessage());
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
+        return self::$instance;
+    }
+
+    public function getConnection() {
+        return $this->connection;
     }
 }

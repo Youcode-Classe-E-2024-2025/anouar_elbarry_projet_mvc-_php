@@ -1,13 +1,8 @@
 <?php
  
- use App\Core\Database;
+use App\Core\Database;
 
- // Database configuration
- $db = new Database(
-  $_ENV['DB_HOST'] ?? 'localhost',
-  $_ENV['DB_NAME'] ?? 'mvc',
-  $_ENV['DB_NAME'] ?? 'postgres',
-  $_ENV['DB_NAME'] ?? 'jppp5734'
- );
+// Get database instance (it will use environment variables internally)
+$db = Database::getInstance();
 
- return $db;
+return $db;

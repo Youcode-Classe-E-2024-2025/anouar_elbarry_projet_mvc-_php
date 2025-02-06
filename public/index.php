@@ -1,11 +1,14 @@
 <?php
-require_once __DIR__ .'/../vendor/autoload.php';
-require_once __DIR__ .'/../app/config/routes.php';
 
-use App\Core\Router;
+// Initialize Twig and get the environment
+$twig = require_once __DIR__ . '/../app/bootstrap.php';
 
-$router = new Router();
+// Create Router with Twig
+$router = new App\Core\Router($twig);
 
-require_once __DIR__ .'/../app/config/routes.php';
+// Configure routes
+$routeConfig = require_once __DIR__ . '/../app/config/routes.php';
+$routeConfig($router);
 
+// Dispatch the request
 $router->dispatch();
