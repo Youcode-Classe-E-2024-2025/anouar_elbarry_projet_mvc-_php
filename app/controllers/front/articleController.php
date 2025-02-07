@@ -7,8 +7,8 @@ use App\Core\View;
 class ArticleController extends View {
     private Article $articleModel;
 
-    public function __construct($twig) {
-        parent::__construct($twig);
+    public function __construct() {
+        parent::__construct();
         $this->articleModel = new Article();
     }
 

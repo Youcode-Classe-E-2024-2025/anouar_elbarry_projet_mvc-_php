@@ -8,8 +8,8 @@ use App\Models\Article;
 class HomeController extends View {
     private $articleModel;
     
-    public function __construct($twig) {
-        parent::__construct($twig);
+    public function __construct() {
+        parent::__construct();
         $this->articleModel = new Article();
     }
     
