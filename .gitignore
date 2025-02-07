@@ -1,2 +1,17 @@
-
 /vendor/
+
+# Cache files
+cache/
+*.php.cache
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.idea/
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
