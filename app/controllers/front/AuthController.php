@@ -54,8 +54,14 @@ class AuthController extends View {
         $password = $_POST['password'];
         
         try {
-            if ($this->auth->login($email, $password)) {
+                $islogged = $this->auth->login($email, $password);
+            if ( $islogged ) {
+               if( $islogged ==='admin'){
+                header('Location: /admin/dashboard');
+               }else{
                 header('Location: /author/dashboard');
+               }
+                
                 exit;
             } else {
                 $this->session->setFlash('error', 'Invalid credentials');

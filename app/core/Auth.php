@@ -35,7 +35,7 @@ class Auth {
             $this->session->set('user_id', $authenticatedUser->getId());
             $this->session->set('username', $authenticatedUser->getUsername());
             $this->session->set('role', $authenticatedUser->getRole());
-            return true;
+            return $authenticatedUser->getrole();
         }
         
         return false;
