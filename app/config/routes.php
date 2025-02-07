@@ -12,7 +12,11 @@ return function($router) {
     $router->add('POST', '/author/create', 'Front\ArticleController@create');
     $router->add('GET', '/article/{id}', 'Front\ArticleController@show');
     $router->add('GET', '/author/dashboard', 'Front\ArticleController@dashboard');
+    $router->add('GET', '/logout', 'Front\AuthController@logout');
+    $router->add('GET', '/article/{id}/edit', 'Front\ArticleController@edit');
+    $router->add('POST', '/article/{id}/edit', 'Front\ArticleController@edit');
+    $router->add('POST', '/article/{id}/archive', 'Front\ArticleController@archive');
     // Back Office Routes
-    // $routes->add('GET' , '/admin/dashboard', 'Back\DashboardController@index');
-    // $routes->add('GET' , '/admin/users', 'Back\userController@index');
+    $router->add('GET' , '/admin/dashboard', 'Back\DashboardController@index');
+    $router->add('GET' , '/admin/users', 'Back\userController@index');
 };

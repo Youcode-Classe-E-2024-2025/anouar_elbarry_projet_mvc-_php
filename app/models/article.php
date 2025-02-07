@@ -89,7 +89,31 @@ class Article extends Model {
         error_log("Failed to insert article");
         return false;
     }
-
+    public function updateArticle($id, $title, $content, $image_url, $status) {
+        $query = "UPDATE articles 
+                 SET title = :title, 
+                     content = :content, 
+                     image_url = :image_url, 
+                     status = :status,
+                     updated_at = NOW() 
+                 WHERE id = :id";
+        
+        $params = [
+            'id' => $id,
+            'title' => $title,
+            'content' => $content,
+            'image_url' => $image_url,
+            'status' => $status
+        ];
+        
+        return $this->security->secureQuery($this->db, $query, $params);
+    }
+    
+    public function archiveArticle($id) {
+        $query = "UPDATE articles SET status = 'archived' WHERE id = :id";
+        $params = ['id' => $id];
+        return $this->security->secureQuery($this->db, $query, $params);
+    }
     public function getArticlesByUserId($userId) {
         $query = "SELECT 
                   a.*,

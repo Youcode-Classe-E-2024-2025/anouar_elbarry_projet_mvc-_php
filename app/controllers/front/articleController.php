@@ -52,7 +52,40 @@ class ArticleController extends View {
         header('Location: /author/dashboard');
         exit;
     }
-
+    public function edit($id) {
+        $article = $this->articleModel->getById($id);
+        if (!$article) {
+            header("HTTP/1.0 404 Not Found");
+            return $this->render('error/404.twig');
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
+            $title = trim($_POST['title']);
+            $content = trim($_POST['content']);
+            $image_url = trim($_POST['image_url']);
+            $status = $_POST['status'];
+            
+            if ($this->articleModel->updateArticle($id, $title, $content, $image_url, $status)) {
+                $this->session->setFlash('success', 'Article updated successfully');
+                header('Location: /author/dashboard');
+                exit;
+            } else {
+                $this->session->setFlash('error', 'Failed to update article');
+            }
+        }
+        
+        return $this->render('front/editArticle.twig', ['article' => $article]);
+    }
+    
+    public function archive($id) {
+        if ($this->articleModel->archiveArticle($id)) {
+            $this->session->setFlash('success', 'Article archived successfully');
+        } else {
+            $this->session->setFlash('error', 'Failed to archive article');
+        }
+        header('Location: /author/dashboard');
+        exit;
+    }
     public function dashboard() {
         // Get articles for the logged-in user
         $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : false;
