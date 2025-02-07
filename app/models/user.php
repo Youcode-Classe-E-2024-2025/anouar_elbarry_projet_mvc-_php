@@ -110,6 +110,29 @@ class User extends Model {
             $user['email']
         ) : null;
     } 
+    public function getAllUsers(){
+        $query = "SELECT * FROM users";
+        $stmt = $this->security->secureQuery($this->conn,$query);
+        $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        $userObjects = [];
+        foreach ($users as $user) {
+            $userObjects[] = new User(
+                $user['id'],
+                $user['username'],
+                $user['password'],
+                $user['role'],
+                $user['email']
+            );
+        }
+        return $userObjects;
+    } 
+    public function totalUsers(){
+        $query = "SELECT COUNT(*) as total_users FROM users";
+        $stmt = $this->security->secureQuery($this->conn, $query);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 
     public function getId(){
        return $this->id;

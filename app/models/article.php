@@ -36,9 +36,21 @@ class Article extends Model {
         return $stmt ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
     }
     public function getAllArticles() {
-        $query = "SELECT * FROM articles ORDER BY created_at DESC";
+        $query = "SELECT
+                  a.*,
+                  u.username as author
+                  FROM articles a 
+                  INNER JOIN users u ON a.user_id = u.id
+                  GROUP BY a.id , author
+                  ORDER BY a.created_at DESC";
         $stmt = $this->security->secureQuery($this->db, $query, []);
         return $stmt ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
+    }
+    public function totalArticles(){
+        $query = "SELECT COUNT(*) as total_articles FROM articles";
+        $stmt = $this->security->secureQuery($this->db, $query);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result;
     }
     public function getById($articleId) {
         $query = "SELECT 
