@@ -44,10 +44,10 @@
                         </div>
                     {% else %}
                         <div class="flex space-x-4">
-                            <a href="/login" class="text-gray-900 hover:text-gray-500 px-3 py-2">
+                            <a href="/auth" class="text-gray-900 hover:text-gray-500 px-3 py-2">
                                 Login
                             </a>
-                            <a href="/register" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md">
+                            <a href="/auth" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md">
                                 Register
                             </a>
                         </div>
@@ -76,6 +76,8 @@
             </div>
         </div>
     </nav>
+
+    {% include 'front/partials/flash-messages.twig' %}
 
     <!-- Main Content -->
     <main class="flex-grow">
