@@ -135,6 +135,7 @@
                 tabs[0].classList.remove('border-transparent', 'text-gray-500');
                 tabs[1].classList.remove('border-primary-500', 'text-primary-600');
                 tabs[1].classList.add('border-transparent', 'text-gray-500');
+                history.pushState(null, '', '/auth');
             } else {
                 loginForm.classList.add('hidden');
                 registerForm.classList.remove('hidden');
@@ -142,7 +143,15 @@
                 tabs[1].classList.remove('border-transparent', 'text-gray-500');
                 tabs[0].classList.remove('border-primary-500', 'text-primary-600');
                 tabs[0].classList.add('border-transparent', 'text-gray-500');
+                history.pushState(null, '', '/auth#register');
             }
         }
+
+        // Check URL hash on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash === '#register') {
+                switchTab('register');
+            }
+        });
     </script>
     {% endblock %}
