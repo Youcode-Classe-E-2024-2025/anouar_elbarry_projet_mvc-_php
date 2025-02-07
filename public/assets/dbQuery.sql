@@ -14,8 +14,8 @@ CREATE TABLE articles (
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     user_id INTEGER REFERENCES users(id),
-    status VARCHAR(20) DEFAULT 'archived',
-    image_url VARCHAR(255),
+    status VARCHAR(20) DEFAULT 'published',
+    image_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

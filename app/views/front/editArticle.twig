@@ -31,7 +31,7 @@
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select name="status" id="status" 
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="draft" {% if article.status == 'draft' %}selected{% endif %}>Draft</option>
+                        <option value="archived" {% if article.status == 'archived' %}selected{% endif %}>Draft</option>
                         <option value="published" {% if article.status == 'published' %}selected{% endif %}>Published</option>
                     </select>
                 </div>
