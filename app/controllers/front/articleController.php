@@ -15,19 +15,20 @@ class ArticleController extends View {
     public function index() {
        $articles = $this->articleModel->getAllArticles();
        $data = ['articles' => $articles];
-       echo $this->twig->render('front/article.twig', $data);
+       return $this->render('front/article.twig', $data);
     }
+
     public function show($articleId) {
        $article = $this->articleModel->getById($articleId);
        if (!$article) {
            // Handle case where article is not found
            header("HTTP/1.0 404 Not Found");
-           echo $this->twig->render('error/404.twig');
-           return;
+           return $this->render('error/404.twig');
        }
        $data = ['article' => $article];
-       echo $this->twig->render('front/articleDetails.twig', $data);
+       return $this->render('front/articleDetails.twig', $data);
     }
+
     public function create(){
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])){
             $title = trim($_POST['title']) ; 
@@ -67,6 +68,6 @@ class ArticleController extends View {
             'user' => ['id' => $userId] // Add more user data if needed
         ];
         
-        echo $this->twig->render('front/authorDashboard.twig', $data);
+        return $this->render('front/authorDashboard.twig', $data);
     }
 }

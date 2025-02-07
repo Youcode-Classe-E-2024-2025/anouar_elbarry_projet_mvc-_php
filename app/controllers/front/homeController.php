@@ -15,12 +15,14 @@ class HomeController extends View {
     
     public function index() {
         // Get latest articles for the homepage
+        $articles = $this->articleModel->getAllArticles();
         
         $data = [
             'title' => 'Welcome to Our Blog',
             'description' => 'Discover our latest articles and stay updated',
+            'articles' => $articles
         ];
         
-        echo $this->twig->render('front/home.twig', $data);
+        return parent::render('front/home.twig', $data);
     }
 }
