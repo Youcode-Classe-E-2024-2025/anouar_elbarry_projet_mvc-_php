@@ -6,12 +6,26 @@ use App\Core\Model;
 
 class Article extends Model {
     private $db;
+    private $id;
+    private $title;
+    private $content;
+    private $userId;
+    private $status;
+    private $image_url;
     private Security $security;
 
-    public function __construct() {
+    public function __construct($id = null,$title=null,$content=null,$userId=null,$status=null,$image_url=null) {
         $this->db = \App\Core\Database::getInstance()->getConnection();
         $this->security = new Security($this->db);
-    }
+        if($id != null){
+            $this->id = $id;
+        }  
+        $this->title = $title;
+        $this->content = $content;
+        $this->userId = $userId;
+        $this->status = $status;
+        $this->image_url = $image_url;
+      }
 
     public function getLatestArticles($limit = 5) {
         $query = "SELECT * FROM articles ORDER BY created_at DESC LIMIT :limit";
@@ -21,7 +35,6 @@ class Article extends Model {
         $stmt = $this->security->secureQuery($this->db, $query, $params);
         return $stmt ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
     }
-
     public function getAllArticles() {
         $query = "SELECT * FROM articles ORDER BY created_at DESC";
         $stmt = $this->security->secureQuery($this->db, $query, []);
@@ -39,5 +52,43 @@ class Article extends Model {
         ]);
         $result = $stmt ? $stmt->fetch(\PDO::FETCH_ASSOC) : null;
         return $result;
+    }
+
+    public function addArticle(){
+        $query = "INSERT INTO articles (title, content, user_id, status, image_url) 
+                  VALUES (:title, :content, :userId, :status, :image_url)";
+        $params = [
+            'title' => $this->title,
+            'content' => $this->content,
+            'userId' => $this->userId,
+            'status' => $this->status ?? 'published',
+            'image_url' => $this->image_url
+        ];
+
+        error_log("Executing SQL query: " . $query);
+        error_log("With parameters: " . print_r($params, true));
+
+        $stmt = $this->security->secureQuery($this->db, $query, $params);
+        if($stmt) {
+            $this->id = $this->db->lastInsertId();
+            error_log("Article inserted successfully with ID: " . $this->id);
+            return $this->id;
+        }
+        error_log("Failed to insert article");
+        return false;
+    }
+
+    public function getArticlesByUserId($userId) {
+        $query = "SELECT 
+                  a.*,
+                  u.username
+                  FROM articles a 
+                  INNER JOIN users u ON a.user_id = u.id
+                  WHERE a.user_id = :userId
+                  ORDER BY a.created_at DESC";
+        $stmt = $this->security->secureQuery($this->db, $query, [
+            "userId" => $userId
+        ]);
+        return $stmt ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
     }
 }

@@ -28,4 +28,45 @@ class ArticleController extends View {
        $data = ['article' => $article];
        echo $this->twig->render('front/articleDetails.twig', $data);
     }
+    public function create(){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])){
+            $title = trim($_POST['title']) ; 
+            $content = trim($_POST['content']); 
+            $image_url = trim($_POST['image_url']); 
+            $status = $_POST['status']; 
+            $userId = $_POST['userId'];
+
+
+            $this->articleModel = new Article(null, $title, $content, $userId, $status, $image_url);
+            $articleId = $this->articleModel->addArticle();
+            
+            if($articleId) {
+                header('Location: /articles');
+                exit;
+            } else {
+
+            }
+        }
+        // If something went wrong, redirect back to dashboard
+        header('Location: /author/dashboard');
+        exit;
+    }
+
+    public function dashboard() {
+        // Get articles for the logged-in user
+        $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : false;
+        
+        if(!$userId) {
+            header('Location: auth/login');
+            exit;
+        }
+
+        $articles = $this->articleModel->getArticlesByUserId($userId);
+        $data = [
+            'articles' => $articles,
+            'user' => ['id' => $userId] // Add more user data if needed
+        ];
+        
+        echo $this->twig->render('front/authorDashboard.twig', $data);
+    }
 }
