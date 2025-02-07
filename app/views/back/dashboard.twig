@@ -10,15 +10,15 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-2">Total Users</h3>
-            <p class="text-3xl font-bold">{{ totalUsers }}</p>
+            <p class="text-3xl font-bold">{{ totalUsers.total_users }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-2">Total Articles</h3>
-            <p class="text-3xl font-bold">{{ totalArticles }}</p>
+            <p class="text-3xl font-bold">{{ totalArticles.total_articles }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-2">Recent Activity</h3>
-            <p class="text-3xl font-bold">{{ recentActivity }}</p>
+            <p class="text-3xl font-bold">{{ articles|length }}</p>
         </div>
     </div>
     
@@ -32,19 +32,17 @@
                         <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
                         <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    {% for article in recentArticles %}
+                    {% for article in articles %}
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ article.title }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ article.author }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ article.date }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ article.created_at|date("Y-m-d H:i") }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                {{ article.status }}
-                            </span>
+                            <a href="/article/{{ article.id }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                         </td>
                     </tr>
                     {% endfor %}
