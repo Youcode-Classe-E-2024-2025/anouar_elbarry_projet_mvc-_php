@@ -134,6 +134,22 @@ class User extends Model {
         return $result;
     }
 
+    public function manageRoles($role,$userId){
+        $query = "UPDATE users 
+                  SET role = :role
+                  WHERE id = :userId";
+        $param = [
+            'role' => $role,
+            'userId' => $userId
+         ];
+         try{
+           $this->security->secureQuery($this->conn,$query,$param);
+         }catch(PDOException $e){
+           dd($e->getMessage());
+         }
+        
+    }
+
     public function getId(){
        return $this->id;
     }

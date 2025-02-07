@@ -11,7 +11,7 @@ use App\Models\User;
 
 class AuthController extends View {
     private $security;
-    private $session;
+    protected $session;
     private $auth;
     private $db;
 
