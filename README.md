@@ -62,7 +62,7 @@ EniBlog is a simple blog application built using the PHP MVC architecture. It fe
 ## Installation
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Youcode-Classe-E-2024-2025/anouar_elbarry_projet_mvc-_php.git
    ```
 
 2. **Navigate to the project directory**:
@@ -101,4 +101,4 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 This project is licensed under the MIT License. See the `LICENSE` file for more information.
 
 ## Contact
-For any inquiries or support, please contact the project maintainer at [email@example.com].
+For any inquiries or support, please contact the project maintainer at [elbarryanwar37@gmail.com].
