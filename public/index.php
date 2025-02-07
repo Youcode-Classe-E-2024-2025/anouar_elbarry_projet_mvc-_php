@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // Initialize Twig and get the environment
 $twig = require_once __DIR__ . '/../app/bootstrap.php';
 

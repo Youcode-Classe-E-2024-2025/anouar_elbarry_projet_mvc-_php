@@ -3,7 +3,6 @@ namespace App\Core;
 
 use \PDOException;
 use \PDOStatement;
-
 class Security {
     private $conn;
 
@@ -47,8 +46,8 @@ class Security {
             $stmt->execute($params);
             return $stmt;
         } catch (PDOException $e) {
-            error_log("Query error: " . $e->getMessage());
-            return false;
+            die("Query error: " . $e->getMessage());
+            // return false;
         }
     }
 }
